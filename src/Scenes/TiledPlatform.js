@@ -108,6 +108,22 @@ class TiledPlatform extends Phaser.Scene {
         // then add the coins to a group
         this.coinGroup = this.add.group(this.coins);
 
+        // creation of blue power ups from object data
+        this.bluePowerUps = map.createFromObjects("Objects", {
+            name: "bluePowerUp",
+            key: "kenney_sheet",
+            frame: 513
+        });
+
+        //physics to bluePowerUps 
+        this.physics.world.enable(this.bluePowerUps, Phaser.Physics.Arcade.STATIC_BODY);
+        this.bluePowerUpGroup = this.add.group(this.bluePowerUps);
+
+        //adds bluepowerups to a group
+        this.physics.add.overlap(this.p1, this.bluePowerUpGroup, (obj1, obj2) => {
+            obj2.destroy(); // remove power up
+        })
+
         // set gravity and physics world bounds (so collideWorldBounds works)
         this.physics.world.gravity.y = 2000;
         this.physics.world.bounds.setTo(0, 0, map.widthInPixels, map.heightInPixels);
