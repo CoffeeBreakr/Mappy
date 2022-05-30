@@ -115,12 +115,26 @@ class TiledPlatform extends Phaser.Scene {
             frame: 513
         });
 
+        //juiced fx
+        this.powerUpVfxManager = this.add.particles('kenney_sheet', 215);
+
         //physics to bluePowerUps 
         this.physics.world.enable(this.bluePowerUps, Phaser.Physics.Arcade.STATIC_BODY);
         this.bluePowerUpGroup = this.add.group(this.bluePowerUps);
 
+        //juiced up fx
+        this.powerUpVfxEffect = this.powerUpVfxManager.createEmitter({
+            follow: this.p1,
+            quantity: 20,
+            scale: {start: 1.0, end: 0.0},  // start big, end small
+            speed: {min: 50, max: 100}, // speed up
+            lifespan: 800,   // short lifespan
+            on: false   // do not immediately start, will trigger in collision
+        });
+
         //adds bluepowerups to a group
         this.physics.add.overlap(this.p1, this.bluePowerUpGroup, (obj1, obj2) => {
+            this.powerUpVfxEffect.explode();  // trigger particle system
             obj2.destroy(); // remove power up
         })
 
